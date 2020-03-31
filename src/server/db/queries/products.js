@@ -1,40 +1,40 @@
 const knex = require('../connection');
 
-function getAllMovies() {
-  return knex('movies')
+function getAllProducts() {
+  return knex('products')
   .select('*');
 }
 
-function getSingleMovie(id) {
-  return knex('movies')
+function getSingleProduct(id) {
+  return knex('products')
   .select('*')
   .where({ id: parseInt(id) });
 }
 
-function addMovie(movie) {
-  return knex('movies')
-  .insert(movie)
+function addProduct(product) {
+  return knex('products')
+  .insert(product)
   .returning('*');
 }
 
-function updateMovie(id, movie) {
-  return knex('movies')
-  .update(movie)
+function updateProduct(id, product) {
+  return knex('products')
+  .update(product)
   .where({ id: parseInt(id) })
   .returning('*');
 }
 
-function deleteMovie(id) {
-  return knex('movies')
+function deleteProduct(id) {
+  return knex('products')
   .del()
   .where({ id: parseInt(id) })
   .returning('*');
 }
 
 module.exports = {
-  getAllMovies,
-  getSingleMovie,
-  addMovie,
-  updateMovie,
-  deleteMovie
+  getAllProducts,
+  getSingleProduct,
+  addProduct,
+  updateProduct,
+  deleteProduct
 };

@@ -1,15 +1,15 @@
 const Router = require('koa-router');
-const queries = require('../db/queries/movies');
+const queries = require('../db/queries/products');
 
 const router = new Router();
-const BASE_URL = `/api/v1/movies`;
+const BASE_URL = `/api/v1/products`;
 
 router.get(BASE_URL, async (ctx) => {
   try {
-    const movies = await queries.getAllMovies();
+    const products = await queries.getAllProducts();
     ctx.body = {
       status: 'success',
-      data: movies
+      data: products
     };
   } catch (err) {
     console.log(err)
@@ -18,17 +18,17 @@ router.get(BASE_URL, async (ctx) => {
 
 router.get(`${BASE_URL}/:id`, async (ctx) => {
   try {
-    const movie = await queries.getSingleMovie(ctx.params.id);
-    if (movie.length) {
+    const product = await queries.getSingleProduct(ctx.params.id);
+    if (product.length) {
       ctx.body = {
         status: 'success',
-        data: movie
+        data: product
       };
     } else {
       ctx.status = 404;
       ctx.body = {
         status: 'error',
-        message: 'That movie does not exist.'
+        message: 'That product does not exist.'
       };
     }
   } catch (err) {
@@ -38,12 +38,12 @@ router.get(`${BASE_URL}/:id`, async (ctx) => {
 
 router.post(`${BASE_URL}`, async (ctx) => {
   try {
-    const movie = await queries.addMovie(ctx.request.body);
-    if (movie.length) {
+    const product = await queries.addProduct(ctx.request.body);
+    if (product.length) {
       ctx.status = 201;
       ctx.body = {
         status: 'success',
-        data: movie
+        data: product
       };
     } else {
       ctx.status = 400;
@@ -63,18 +63,18 @@ router.post(`${BASE_URL}`, async (ctx) => {
 
 router.put(`${BASE_URL}/:id`, async (ctx) => {
   try {
-    const movie = await queries.updateMovie(ctx.params.id, ctx.request.body);
-    if (movie.length) {
+    const product = await queries.updateProduct(ctx.params.id, ctx.request.body);
+    if (product.length) {
       ctx.status = 200;
       ctx.body = {
         status: 'success',
-        data: movie
+        data: product
       };
     } else {
       ctx.status = 404;
       ctx.body = {
         status: 'error',
-        message: 'That movie does not exist.'
+        message: 'That product does not exist.'
       };
     }
   } catch (err) {
@@ -88,18 +88,18 @@ router.put(`${BASE_URL}/:id`, async (ctx) => {
 
 router.delete(`${BASE_URL}/:id`, async (ctx) => {
   try {
-    const movie = await queries.deleteMovie(ctx.params.id);
-    if (movie.length) {
+    const product = await queries.deleteProduct(ctx.params.id);
+    if (product.length) {
       ctx.status = 200;
       ctx.body = {
         status: 'success',
-        data: movie
+        data: product
       };
     } else {
       ctx.status = 404;
       ctx.body = {
         status: 'error',
-        message: 'That movie does not exist.'
+        message: 'That product does not exist.'
       };
     }
   } catch (err) {

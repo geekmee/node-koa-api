@@ -6,6 +6,7 @@ const passport = require('koa-passport');
 const indexRoutes = require('./routes/index');
 const movieRoutes = require('./routes/movies');
 const authRoutes = require('./routes/auth');
+const productRoutes = require('./routes/products');
 const store = require('./session');
 
 const app = new Koa();
@@ -27,6 +28,8 @@ app.use(passport.session());
 app.use(indexRoutes.routes());
 app.use(movieRoutes.routes());
 app.use(authRoutes.routes());
+app.use(productRoutes.routes());
+
 
 // server
 const server = app.listen(PORT, () => {
