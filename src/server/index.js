@@ -15,6 +15,7 @@ const PORT = process.env.PORT || 1337;
 // sessions
 app.keys = ['super-secret-key'];
 //app.use(session({ store }, app)); //use redis to save session
+//see https://github.com/koajs/koa-redis#basic
 const SessionConfig = {
   key: 'koa:sess', /** (string) cookie key (default is koa:sess) */
   /** (number || 'session') maxAge in ms (default is 1 days) */
