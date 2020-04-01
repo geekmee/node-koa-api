@@ -5,7 +5,8 @@ const router = new Router();
 const BASE_URL = `/api/v1/movies`;
 
 router.get(BASE_URL, async (ctx) => {
-  try {
+if (ctx.isAuthenticated()){
+try {
     const movies = await queries.getAllMovies();
     ctx.body = {
       status: 'success',
@@ -14,6 +15,15 @@ router.get(BASE_URL, async (ctx) => {
   } catch (err) {
     console.log(err)
   }
+}else  {
+    ctx.status = 401;
+    ctx.body = {
+      msg: 'auth fail',
+      status: 'auth fail'
+    }
+
+}
+
 })
 
 router.get(`${BASE_URL}/:id`, async (ctx) => {

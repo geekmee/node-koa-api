@@ -1,18 +1,32 @@
 const Router = require('koa-router');
 const queries = require('../db/queries/products');
+const helpers = require('./_helpers');
 
 const router = new Router();
 const BASE_URL = `/api/v1/products`;
 
 router.get(BASE_URL, async (ctx) => {
-  try {
-    const products = await queries.getAllProducts();
-    ctx.body = {
-      status: 'success',
-      data: products
-    };
-  } catch (err) {
-    console.log(err)
+  //if (ctx.isAuthenticated()){
+  if (helpers.ensureAuthenticated(ctx)) {
+      try {
+        const products = await queries.getAllProducts();
+        ctx.body = {
+          status: 'success',
+          data: products
+        };
+      } catch (err) {
+        console.log(err)
+      }
+  }else {
+
+      /*
+      ctx.status = 401;
+      ctx.body = {
+        msg: 'auth fail',
+        status: 'auth fail'
+      }
+      */
+      ctx.redirect('/auth/login');
   }
 })
 
