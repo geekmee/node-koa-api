@@ -1,3 +1,4 @@
+require('dotenv-safe').config();
 const Koa = require('koa');
 const bodyParser = require('koa-bodyparser');
 const session = require('koa-session');
