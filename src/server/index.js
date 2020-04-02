@@ -8,7 +8,9 @@ const indexRoutes = require('./routes/index');
 const movieRoutes = require('./routes/movies');
 const authRoutes = require('./routes/auth');
 const productRoutes = require('./routes/products');
-const store = require('./session');
+//const redisStore = require('./session');
+const redisStore = require('koa-redis');
+
 
 const app = new Koa();
 const PORT = process.env.PORT || 1337;
@@ -16,7 +18,17 @@ const PORT = process.env.PORT || 1337;
 // sessions
 app.keys = ['super-secret-key'];
 //app.use(session({ store }, app)); //use redis to save session
-//see https://github.com/koajs/koa-redis#basic
+//see <https://github.com/koajs/koa-redis#basic>
+
+app.use(session({
+  store: redisStore({
+    host: process.env.REDIS_HOST,
+    port: process.env.REDIS_PORT,
+    //..
+  })
+},app));
+
+
 const SessionConfig = {
   key: 'koa:sess', /** (string) cookie key (default is koa:sess) */
   /** (number || 'session') maxAge in ms (default is 1 days) */
@@ -29,7 +41,7 @@ const SessionConfig = {
   rolling: false, /** (boolean) Force a session identifier cookie to be set on every response. The expiration is reset to the original maxAge, resetting the expiration countdown. (default is false) */
   renew: false, /** (boolean) renew session when session is nearly expired, so we can always keep user logged in. (default is false)*/
 };
-app.use(session(SessionConfig, app));
+//app.use(session(SessionConfig, app));
 
 // body parser
 app.use(bodyParser());
