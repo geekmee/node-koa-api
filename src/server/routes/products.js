@@ -7,11 +7,11 @@ const router = new Router();
 const BASE_URL = `/api/v1/products`;
 
 router.get(BASE_URL,AuthHelper.ensureAuthenticated, async (ctx) => {
-  //if (ctx.isAuthenticated()){
   console.log("***routes/products: /api/v1/products***");
   try {
     const products = await queries.getAllProducts();
-    console.log("***/api/v1/products "+products.length);
+    console.log("***/api/v1/products products:"+products.length);
+    console.log("***/api/v1/products user:"+ctx.request.user.username); //from AuthHelper.ensureAuthenticated
     ctx.body = {
       status: 'success',
       data: products
