@@ -1,9 +1,10 @@
 const Router = require('koa-router');
 const passport = require('koa-passport');
 const fs = require('fs');
-
 const queries = require('../db/queries/users');
 const helpers = require('./_helpers');
+const jwt       = require('jsonwebtoken');
+
 
 const router = new Router();
 
@@ -34,11 +35,24 @@ router.get('/auth/login', async (ctx) => {
   }
 });
 
+// use local to auth (session:false), then return jwt token
 router.post('/auth/login', async (ctx) => {
-  return passport.authenticate('local', (err, user, info, status) => {
+  return passport.authenticate('local',{ session: false }, (err, user, info, status) => {
     if (user) {
+      /** put to session
       ctx.login(user);
       ctx.redirect('/auth/status');
+      **/
+
+      console.log("***** create token *****");
+      const payload = {
+          sub: user.id,
+          exp: Date.now() + parseInt(process.env.JWT_LIFETIME),
+          username: user.username
+      };
+      const token = jwt.sign(JSON.stringify(payload), process.env.JWT_SECRET, {algorithm: process.env.JWT_ALGORITHM});
+      ctx.body = {data: {token: token}};
+
     } else {
       ctx.status = 400;
       ctx.body = { status: 'error' };

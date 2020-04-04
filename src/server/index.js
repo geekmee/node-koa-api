@@ -49,7 +49,7 @@ app.use(bodyParser());
 // authentication
 require('./auth');
 app.use(passport.initialize());
-app.use(passport.session());
+//app.use(passport.session());
 
 // routes
 app.use(indexRoutes.routes());
